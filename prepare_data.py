@@ -3,6 +3,7 @@ from get_data import get_data
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
 
 import pandas as pd 
 import numpy as np
@@ -10,8 +11,14 @@ import numpy as np
 def prepare_data():
 	train_set, test_set = get_data()
 
-	extracted_train_set = drop_empty_labels(train_set)
-	extracted_test_set = drop_empty_labels(test_set)
+	actual_train_set = drop_empty_labels(train_set)
+	actual_test_set = drop_empty_labels(test_set)
+
+	extracted_train_set = actual_train_set.drop(columns=["Credit Score"])
+	extracted_test_set = actual_test_set.drop(columns=["Credit Score"])
+
+	train_labels = actual_train_set["Credit Score"].copy()
+	test_labels = actual_test_set["Credit Score"].copy()
 
 	dropped_train_set, columns = drop_columns(extracted_train_set)
 	dropped_test_set = drop_columns(extracted_test_set, columns=columns, is_test_set=True)
@@ -25,7 +32,9 @@ def prepare_data():
 	final_train_set, scaler = standardization(categorized_train_set)
 	final_test_set = standardization(categorized_test_set, scaler=scaler, is_test_set=True)
 
-	return final_train_set, final_test_set
+	X_train, X_valid, y_train, y_valid = train_test_split(final_train_set, train_labels, test_size=0.2)
+
+	return {"X_train": X_train, "X_valid": X_valid, "X_test": final_test_set, "y_train": y_train, "y_valid": y_valid, "y_test": test_labels}
 	
 
 def drop_empty_labels(dataset):
