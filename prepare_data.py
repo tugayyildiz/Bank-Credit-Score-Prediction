@@ -32,7 +32,7 @@ def prepare_data():
 	final_train_set, scaler = standardization(categorized_train_set)
 	final_test_set = standardization(categorized_test_set, scaler=scaler, is_test_set=True)
 
-	X_train, X_valid, y_train, y_valid = train_test_split(final_train_set, train_labels, test_size=0.2)
+	X_train, X_valid, y_train, y_valid = train_test_split(final_train_set, train_labels, test_size=0.1)
 
 	return {"X_train": X_train, "X_valid": X_valid, "X_test": final_test_set, "y_train": y_train, "y_valid": y_valid, "y_test": test_labels}
 	
