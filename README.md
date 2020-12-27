@@ -1,6 +1,6 @@
 # Bank Credit Score Prediction
 
-This contains a neural network implementation which predict a credit score for bank customers. 
+This repository contains a neural network implementation which predict a credit score for bank customers. 
 
 ## Files
 
